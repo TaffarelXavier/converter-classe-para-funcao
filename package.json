@@ -1,0 +1,25 @@
+{
+  "name": "basic-css",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "clsx": "^1.0.4",
+    "dotenv": "^8.2.0",
+    "next": "^9.2.1",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "^16.8.6",
+    "react-lazyload": "^2.6.2",
+    "react-loadable": "^5.5.0",
+    "react-markdown": "^4.3.1",
+    "react-ssr-prepass": "^1.0.5",
+    "react-swipeable-views": "^0.13.3"
+  },
+  "license": "ISC"
+}
