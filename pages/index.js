@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Prism from 'prismjs';
+// The code snippet you want to highlight, as a string
+const code = `var data = 1;`;
+
+// Returns a highlighted HTML string
+
 
 export default () => {
+	const html = Prism.highlight(code, Prism.languages.javascript, 'javascript');
 
 	const [textFormated, setTextFormated] = useState('');
 
@@ -18,7 +25,7 @@ export default () => {
 		var saida = 'const';
 
 		arr.map((el, index) => {
-			var className = el.match(/class\s+(\w+)/);
+			var className = el.match(/className\s+(\w+)/);
 
 			if (Boolean(className)) {
 				saida += ` ${className[1]} = () => {\n`;
@@ -49,7 +56,7 @@ export default () => {
 					</Form>
 				</Col>
 				<Col>
-				<pre><code className="language-css">{`p { color: red }`}</code></pre>
+				<span className="token keyword">var</span> data <span className="token operator">=</span> <span className="token number">1</span><span className="token punctuation">;</span>
 
 					{textFormated !== '' ? (
 						<>
