@@ -1,76 +1,140 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Prism from 'prismjs';
-// The code snippet you want to highlight, as a string
-const code = `var data = 1;`;
-
-// Returns a highlighted HTML string
-
+import React, { useState } from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import Highlight from "react-highlight";
+import converterClassToFunction from "../utils/ConverterClassToFunction";
 
 export default () => {
-	const html = Prism.highlight(code, Prism.languages.javascript, 'javascript');
+  const [
+    entrada,
+    setEntrada
+  ] = useState(`class TodoApp extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { items: [], text: '' };
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+  
+    render() {
+      return (
+        <div>
+          <h3>Tarefas</h3>
+          <TodoList items={this.state.items} />
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="new-todo">
+              O que precisa ser feito?
+            </label>
+            <input
+              id="new-todo"
+              onChange={this.handleChange}
+              value={this.state.text}
+            />
+            <button>
+              Adicionar #{this.state.items.length + 1}
+            </button>
+          </form>
+        </div>
+      );
+    }
+  
+    handleChange(e) {
+      this.setState({ text: e.target.value });
+    }
+  
+    handleSubmit(e) {
+      e.preventDefault();
+      if (!this.state.text.length) {
+        return;
+      }
+      const newItem = {
+        text: this.state.text,
+        id: Date.now()
+      };
+      this.setState(state => ({
+        items: state.items.concat(newItem),
+        text: ''
+      }));
+    }
+  }
+  
+  class TodoList extends React.Component {
+    render() {
+      return (
+        <ul>
+          {this.props.items.map(item => (
+            <li key={item.id}>{item.text}</li>
+          ))}
+        </ul>
+      );
+    }
+  }
+  
+  ReactDOM.render(
+    <TodoApp />,
+    document.getElementById('todos-example')
+  );`);
 
-	const [textFormated, setTextFormated] = useState('');
+  const [textFormated, setTextFormated] = useState("");
 
-	const [copiado, setCopy] = useState(false);
+  const [copiado, setCopy] = useState(false);
 
-	const handleChange = ev => {
-		
-		var entrada = ev.target.value;
+  const handleChange = ev => {
+    let entrada = ev.target.value;
 
-		var arr = entrada.split('\n');
+    setEntrada(entrada);
 
-		var saida = 'const';
+    setTextFormated(converterClassToFunction(entrada));
+  };
 
-		arr.map((el, index) => {
-			var className = el.match(/className\s+(\w+)/);
+  const handlerConvert = () => {
+    setTextFormated(converterClassToFunction(entrada));
+  };
 
-			if (Boolean(className)) {
-				saida += ` ${className[1]} = () => {\n`;
-			} else if (Boolean(el.match(/\s+?render\(\)\s+{/gm))) {
-				saida += '\n';
-			} else {
-				saida += el + '\n';
-			}
-		});
-
-		setTextFormated(saida.replace(/\}\n\}/, '\n}\n'));
-	};
-
-	return (
-		<Container>
-			<Row>
-				<Col>
-					<h2>Convete uma classe para função em javascript</h2>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<Form>
-						<Form.Group controlId="exampleForm.ControlTextarea1">
-							<Form.Label>Cole o código no editor abaixo:</Form.Label>
-							<Form.Control as="textarea" rows="15" autoFocus onChange={handleChange} />
-						</Form.Group>
-					</Form>
-				</Col>
-				<Col>
-				<span className="token keyword">var</span> data <span className="token operator">=</span> <span className="token number">1</span><span className="token punctuation">;</span>
-
-					{textFormated !== '' ? (
-						<>
-							<h3>Saída:</h3>
-							<pre>{textFormated}</pre>
-							<CopyToClipboard text={textFormated} onCopy={() => setCopy(true)}>
-								<Button variant="primary" type="submit">Copiar para área de transferência</Button>
-							</CopyToClipboard>
-						</>
-					) : (
-						<></>
-					)}
-				</Col>
-			</Row>
-		</Container>
-	);
+  return (
+    <Container>
+      <Row style={{ marginBottom: 40, marginTop: 40 }}>
+        <Col>
+          <h2>Conversor de <b>classe</b> para <b>função</b> em javascript.</h2>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <Form>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>
+                <b>Before:</b>
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="15"
+                value={entrada}
+                autoFocus
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Button onClick={handlerConvert}>Converter</Button>
+          </Form>
+        </Col>
+        <Col md={6}>
+          {textFormated !== "" ? (
+            <>
+              <label>
+                <b>After:</b>
+              </label>
+              <Highlight innerHTML={false}>{textFormated}</Highlight>
+              <CopyToClipboard text={textFormated} onCopy={() => setCopy(true)}>
+                <Button variant="primary" className="btn-block" type="submit">
+                  Copiar para área de transferência
+                </Button>
+              </CopyToClipboard>
+            </>
+          ) : (
+            <></>
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
 };
