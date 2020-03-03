@@ -83,11 +83,6 @@ const converterClassToFunction = entrada => {
           }
         });
       }
-    } else if (
-      new RegExp(className).test(linha) ||
-      /document\.getElementById\(.*?\)/.test(linha) ||
-      /ReactDOM\.render\(/.test(linha)
-    ) {
     } else {
       saida += linha + "\n";
     }
@@ -95,13 +90,10 @@ const converterClassToFunction = entrada => {
 
   let text = saida.replace(/\}\n\}/, "\n}\n");
 
-  console.log(text);
+  text += `export default ${className};`;
 
-  text += `export default ${className}`;
-
-  return text.replace("}  );", ";");
+  return text.replace(/\)\;.*[\}].*\)\;/gms,');\n}\n');
 };
 
-export default converterClassToFunction;
 
-
+export default converterClassToFunction; 

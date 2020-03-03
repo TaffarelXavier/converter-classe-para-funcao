@@ -6,7 +6,6 @@ import Highlight from "react-highlight";
 import converterClassToFunction from "../utils/ConverterClassToFunction";
 
 export default () => {
-  const [iniciado, setIniciado] = useState(false);
   const [
     entrada,
     setEntrada
@@ -19,6 +18,7 @@ export default () => {
       );
     }
   }
+  
   ReactDOM.render(
     <HelloMessage name="Taylor" />,
     document.getElementById('hello-example')
@@ -29,16 +29,14 @@ export default () => {
   const [copiado, setCopy] = useState(false);
 
   const handleChange = ev => {
-
     let entrada = ev.target.value;
 
     setEntrada(entrada);
 
-    handlerConvert();
+    setTextFormated(converterClassToFunction(entrada));
   };
 
   const handlerConvert = () => {
-    setIniciado(true);
     setTextFormated(converterClassToFunction(entrada));
   };
 
@@ -70,7 +68,7 @@ export default () => {
           </Form>
         </Col>
         <Col md={6}>
-          {textFormated !== "" && iniciado ? (
+          {textFormated !== "" ? (
             <>
               <label>
                 <b>After:</b>
@@ -89,11 +87,9 @@ export default () => {
       </Row>
       <Row style={{ marginTop: 60 }}>
         <Col>
-          <a
-            href="https://github.com/TaffarelXavier/converter-classe-para-funcao"
-            target="_blank"
-          >
-            Seja um colaboradador deste projeto:
+          
+          <a href="https://github.com/TaffarelXavier/converter-classe-para-funcao" target="_blank">
+          Seja um colaboradador deste projeto:
             <img
               src="https://symbols.getvecta.com/stencil_81/41_github-tile.7833f77ccf.svg"
               width={20}
