@@ -5,6 +5,11 @@
  *
  * @param {*} entrada
  */
+
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 const converterClassToFunction = entrada => {
   //
   let arr = entrada.split("\n");
@@ -55,10 +60,10 @@ const converterClassToFunction = entrada => {
 
         //Para verificar se o valor é array
         if (valorInicialHook.match(/(\[\])|(\[\s+\])/)) {
-          obj += `\tconst [${objHook}, set${objHook}] = useState(${valorInicialHook.trim()});\n`;
+          obj += `\tconst [${objHook}, set${objHook.capitalize()}] = useState(${valorInicialHook.trim()});\n`;
         } else {
           //demais valores:
-          obj += `\tconst [${objHook}, set${objHook}] = useState(${valorInicialHook.trim()});\n`;
+          obj += `\tconst [${objHook}, set${objHook.capitalize()}] = useState(${valorInicialHook.trim()});\n`;
         }
       });
 
@@ -98,3 +103,5 @@ const converterClassToFunction = entrada => {
 };
 
 export default converterClassToFunction;
+
+
