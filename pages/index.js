@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -29,12 +29,9 @@ export default () => {
   const [copiado, setCopy] = useState(false);
 
   const handleChange = ev => {
-
     let entrada = ev.target.value;
 
     setEntrada(entrada);
-
-    handlerConvert();
   };
 
   const handlerConvert = () => {
@@ -83,7 +80,23 @@ export default () => {
               </CopyToClipboard>
             </>
           ) : (
-            <></>
+            <>
+              <label>
+                <b>After:</b>
+              </label>
+              <Highlight>
+                {`const HelloMessage = (props) => {
+
+return (
+  <div>
+    Olá, {props.name}!
+  </div>
+);
+}
+
+export default HelloMessage;`}
+              </Highlight>
+            </>
           )}
         </Col>
       </Row>
