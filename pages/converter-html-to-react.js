@@ -25,7 +25,7 @@ function handle(){
 	let regexImg = /((<img[^>]* src=\"([^\"]*)\"[^>]*)[^\/]>|\<img?[^\/]>)/g;
 	let removeTagScript  = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
 	let removeAllComment  = /<!--[\s\S]*?-->/g
-	let removeDoctype  = /<!DOCTYPE[^>[]*(\[[^]]*\])?>/
+	let removeDoctype  = /<!(DOCTYPE|doctype)[^>[]*(\[[^]]*\])?>/
 	let replaceheadByHead  = [/[\<](head)[\s]*\>/gm, /<\/.*?(head)\>/gm]; //Array Two items
 	let removeTagHtml  = /[\<](html)[\s]*\>|<\/.*?(html)\>/gm; //Array Two items
 	let metaUpdateCharset  = /charset/g
