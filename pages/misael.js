@@ -60,6 +60,13 @@ const App = () => {
 							</a>{' '}
 							<div id="mw-content-text" lang="pt" dir="ltr" className="mw-content-ltr">
 								<div className="mw-parser-output">
+									<table>
+
+										<tbody>
+											
+										</tbody>
+
+									</table>
 									<table
 										className="print"
 										style="width:250px;margin: 0 0 1em 1em; border: solid #aaa 1px; background: #f9f9f9; padding: 1ex; font-size: 90%; clear: right; float: right;"

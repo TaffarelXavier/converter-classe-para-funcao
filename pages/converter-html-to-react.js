@@ -1,26 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, Children } from 'react';
 import Head from 'next/head';
+
+const handleEstrutuaReactNextJs = (data) =>{
+	
+	let reactApp = `
+	import React, { useState } from 'react';
+	import Head from 'next/head';
+	
+	const App = () => {
+	`
+	reactApp += `return (<>${data}</>)
+
+}
+	`;
+
+	reactApp += 'export default App;'
+
+return reactApp;
+}
+
 const App = () => {
     const [entrada, setCodigo] = useState('');
     const [saida, setSaida] = useState('');
 
 function handle(){
+	
 	let regexImg = /((<img[^>]* src=\"([^\"]*)\"[^>]*)[^\/]>|\<img?[^\/]>)/g;
 	let removeTagScript  = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
 	let removeAllComment  = /<!--[\s\S]*?-->/g
 	let removeDoctype  = /<!DOCTYPE[^>[]*(\[[^]]*\])?>/
+	let replaceheadByHead  = [/[\<](head)[\s]*\>/gm, /<\/.*?(head)\>/gm]; //Array Two items
+	let removeTagHtml  = /[\<](html)[\s]*\>|<\/.*?(html)\>/gm; //Array Two items
 	let metaUpdateCharset  = /charset/g
+	const regexCssStyle = /style=((".*?"|'.*?'|[^"'][^\s]*))/gs;
 
+	//Data:
 	let data = entrada.replace(regexImg, "$1 />");
 	
 	data = data.replace(removeTagScript, "");
+	data = data.replace(removeTagHtml, "");
+	data = data.replace(replaceheadByHead[0], "<Head>");
+	data = data.replace(replaceheadByHead[1], "</Head>");
 	data = data.replace(removeAllComment, "");
 	data = data.replace(removeDoctype, "");
-	data = data.replace(/\r?\n|\r/g, "");
+	//data = data.replace(/\r?\n|\r/g, "");   //Remove the line breaks
 	data = data.replace(/class\=/g, "className=");
 	data = data.replace(metaUpdateCharset, "charSet");
 
-    setSaida(data);
+	data = data.replace(regexCssStyle, function(ev){
+		return `style={{${ev.replace(/style=\"|\"/gs,'')}}}`;
+	});
+
+    setSaida(handleEstrutuaReactNextJs(data));
 }
 
 	return (
