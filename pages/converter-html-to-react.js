@@ -3,23 +3,20 @@ import Head from 'next/head';
 
 const handleEstrutuaReactNextJs = (data) =>{
 	
-	let reactApp = `
-	import React, { useState } from 'react';
+	let reactApp = `import React, { useState } from 'react';
 	import Head from 'next/head';
 	
-	const App = () => {
-	`
-	reactApp += `return (<>${data}</>)
+	const App = () => {`;
 
-}
-	`;
+	reactApp += `return (<>${data}</>);\n\n }`;
 
-	reactApp += 'export default App;'
+	reactApp += '\n\nexport default App;'
 
-return reactApp;
+	return reactApp;
 }
 
 const App = () => {
+
     const [entrada, setCodigo] = useState('');
     const [saida, setSaida] = useState('');
 
@@ -33,12 +30,15 @@ function handle(){
 	let removeTagHtml  = /[\<](html)[\s]*\>|<\/.*?(html)\>/gm; //Array Two items
 	let metaUpdateCharset  = /charset/g
 	const regexCssStyle = /style=((".*?"|'.*?'|[^"'][^\s]*))/gs;
+	const replaceTagMeta = /(<meta[^>]+)>/gs;
+	const replaceTagLink = /(<link[^>]+)>/gs;
 
 	//Data:
 	let data = entrada.replace(regexImg, "$1 />");
-	
-	data = data.replace(removeTagScript, "");
 	data = data.replace(removeTagHtml, "");
+	data = data.replace(replaceTagMeta, "$1 />");
+	data = data.replace(replaceTagLink, "$1 />");
+	data = data.replace(removeTagScript, "");
 	data = data.replace(replaceheadByHead[0], "<Head>");
 	data = data.replace(replaceheadByHead[1], "</Head>");
 	data = data.replace(removeAllComment, "");
